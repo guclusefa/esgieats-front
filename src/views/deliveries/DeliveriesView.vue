@@ -23,7 +23,7 @@ onMounted(async () => {
             loading.value = true;
             await deliveriesStore.fetchDeliveries(loggedUser?.id);
         } catch (error) {
-            toast.error('Erreur lors du chargement des commandes.');
+            toast.error('Erreur lors du chargement des livraisons.');
         } finally {
             loading.value = false;
         }
@@ -33,7 +33,7 @@ onMounted(async () => {
 
 <template>
     <WrapperElement>
-        <SectionElement title="Commandes">
+        <SectionElement title="Livraisons">
             <template #content>
                 <SpinnerElement large v-if="loading" />
                 <DeliveryList :deliverys="deliveriesStore.deliveries" v-else />

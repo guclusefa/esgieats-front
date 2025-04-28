@@ -45,7 +45,7 @@ const navLinks = [
   },
   {
     name: 'deliveries',
-    label: 'Mes commandes',
+    label: 'Mes Livraisons',
     icon: UserGroupIcon,
     iconSolid: UserGroupIconSolid,
     needsAuth: true
