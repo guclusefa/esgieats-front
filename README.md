@@ -1,4 +1,4 @@
-# EsgiEats
+# EsgEats
 
 ## Auteurs :
 BENAISSA Ilian - @IlianCode

@@ -5,9 +5,9 @@ import WrapperElement from '@/components/elements/WrapperElement.vue';
 <template>
   <div class="bg-gradient-to-r from-primary-lightest to-primary-darkest text-white py-20">
     <div class="container mx-auto text-center">
-      <h1 class="text-4xl md:text-6xl font-bold mb-4">EsgiEats</h1>
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">EsgEats</h1>
       <p class="text-lg md:text-2xl mb-8">
-        Bienvenue EsgiEats
+        Bienvenue EsgEats
       </p>
     </div>
   </div>
