@@ -4,6 +4,7 @@ import SpinnerElement from '@/components/elements/SpinnerElement.vue';
 import WrapperElement from '@/components/elements/WrapperElement.vue';
 import UserCard from '@/components/users/UserCard.vue';
 import { useUsersStore } from '@/stores/users';
+import { useMenuItemsStore } from '@/stores/menuItems';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
@@ -12,15 +13,17 @@ const router = useRouter();
 const params = router.currentRoute?.value.params;
 
 const usersStore = useUsersStore();
+const menuItemsStore = useMenuItemsStore(); 
 
 onMounted(async () => {
     if (typeof params.id === 'string') {
         try {
-            // delete previous to avoid flickering
             usersStore.resetUser();
+            menuItemsStore.resetMenuItems();
             await usersStore.fetchUser(params.id);
+            await menuItemsStore.fetchMenuItems(params.id);
         } catch (error) {
-            toast.error("Erreur lors du chargement du user.");
+            toast.error("Erreur lors du chargement du user ou du menu.");
         }
     }
 });
@@ -29,7 +32,7 @@ onMounted(async () => {
 <template>
     <WrapperElement>
         <template v-if="usersStore.user.id">
-            <SectionElement :title="`${usersStore.user.firstname} ${usersStore.user.lastname}`" :description="`Détails de l'utilisateur ${usersStore.user.firstname} ${usersStore.user.lastname}`">
+            <SectionElement :title="`${usersStore.user.firstname}`">
                 <template #content>
                     <UserCard :user="usersStore.user" />
                 </template>

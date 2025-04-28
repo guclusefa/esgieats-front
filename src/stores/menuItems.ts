@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 const url = '/menu';
 
-export const useMenuItemssStore = defineStore({
+export const useMenuItemsStore = defineStore({
   id: 'menuItems',
   state: () => ({
     menuItems: [] as MenuItem[],
