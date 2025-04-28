@@ -1,7 +1,4 @@
-# Hackathon
-
-## Api
-Utilisation de l'api Hackathon : https://Hackathon-esgi.vercel.app/
+# EsgiEats
 
 ## Auteurs :
 BENAISSA Ilian - @IlianCode

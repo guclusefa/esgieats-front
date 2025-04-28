@@ -71,7 +71,7 @@ function logout() {
                 <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">3</span>
               </IconElement>
               <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold">{{ user.email }}</span>
+                <span class="text-sm font-semibold">{{ user.firstname }} {{ user.lastname }}</span>
                 <ButtonElement @click="logout" title="Déconnexion">Déconnexion</ButtonElement>
               </div>
             </template>
