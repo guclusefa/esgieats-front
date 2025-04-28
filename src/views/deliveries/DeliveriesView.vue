@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import DeliveryList from '@/components/deliveries/DeliveryList.vue';
 import SectionElement from '@/components/elements/SectionElement.vue';
 import SpinnerElement from '@/components/elements/SpinnerElement.vue';
 import WrapperElement from '@/components/elements/WrapperElement.vue';
-import UserList from '@/components/users/UserList.vue';
 import { useAuthStore } from '@/stores/auth';
-import { useUsersStore } from '@/stores/users';
+import { useDeliveriesStore } from '@/stores/deliveries';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const loading = ref(false);
-const usersStore = useUsersStore();
+const deliveriesStore = useDeliveriesStore();
 const useAuth = useAuthStore();
 
 let loggedUser: any = null;
@@ -18,12 +18,12 @@ if (useAuth.user) {
 }
 
 onMounted(async () => {
-    if (!usersStore.users.length) {
+    if (!deliveriesStore.deliveries.length) {
         try {
             loading.value = true;
-            await usersStore.fetchUsers();
+            await deliveriesStore.fetchDeliveries(loggedUser?.id);
         } catch (error) {
-            toast.error('Erreur lors du chargement des restaurants.');
+            toast.error('Erreur lors du chargement des commandes.');
         } finally {
             loading.value = false;
         }
@@ -33,10 +33,10 @@ onMounted(async () => {
 
 <template>
     <WrapperElement>
-        <SectionElement title="Restaurants">
+        <SectionElement title="Commandes">
             <template #content>
                 <SpinnerElement large v-if="loading" />
-                <UserList :users="usersStore.users" v-else />
+                <DeliveryList :deliverys="deliveriesStore.deliveries" v-else />
             </template>
         </SectionElement>
     </WrapperElement>
