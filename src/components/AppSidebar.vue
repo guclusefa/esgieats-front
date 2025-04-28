@@ -35,8 +35,16 @@ const navLinks = [
     icon: HomeIcon,
     iconSolid: HomeIconSolid,
     needsAuth: false
+  },
+  {
+    name: 'users',
+    label: 'Restaurants',
+    icon: UserGroupIcon,
+    iconSolid: UserGroupIconSolid,
+    needsAuth: false
   }
 ];
+
 
 const useAuth = useAuthStore();
 
