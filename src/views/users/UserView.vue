@@ -8,12 +8,13 @@ import { useMenuItemsStore } from '@/stores/menuItems';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
+import MenuItemList from '@/components/menuItems/MenuItemList.vue';
 
 const router = useRouter();
 const params = router.currentRoute?.value.params;
 
 const usersStore = useUsersStore();
-const menuItemsStore = useMenuItemsStore(); 
+const menuItemsStore = useMenuItemsStore();
 
 onMounted(async () => {
     if (typeof params.id === 'string') {
@@ -35,6 +36,12 @@ onMounted(async () => {
             <SectionElement :title="`${usersStore.user.firstname}`">
                 <template #content>
                     <UserCard :user="usersStore.user" />
+                </template>
+            </SectionElement>
+
+            <SectionElement title="Menu">
+                <template #content>
+                    <MenuItemList :menuItems="menuItemsStore.menuItems" />
                 </template>
             </SectionElement>
         </template>
