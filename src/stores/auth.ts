@@ -11,7 +11,7 @@ export const useAuthStore = defineStore({
     async login(credentials: { email: string; password: string }) {
       try {
         // Request
-        const response = await api.post('/auth/login', credentials);
+        const response = await api.post('/users/login', credentials);
         if (response.status < 200 || response.status >= 300) {
           throw new Error('Invalid response');
         }
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore({
     },
     async getUser() {
       try {
-        const response = await api.get('/auth/me');
+        const response = await api.get('/users/me');
         this.user = response.data;
 
         console.log(JSON.stringify(this.user));
@@ -60,7 +60,7 @@ export const useAuthStore = defineStore({
         };
 
         // Request
-        const response = await api.post('/auth/register', body);
+        const response = await api.post('/users/register', body);
         if (response.status < 200 || response.status >= 300) {
           throw new Error('Invalid response');
         }
