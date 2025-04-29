@@ -48,9 +48,13 @@ export const useOrdersStore = defineStore({
         throw error;
       }
     },
-    async updateOrderStatus(id: string, status: string) {
+    async updateOrderStatus(id: string, status: string, deliveryPersonId: string) {
       try {
-        await api.put(`${url}/${id}/status`, { status });
+        const data = {
+          delivery_person_id: deliveryPersonId,
+          status: status
+        };
+        await api.put(`${url}/${id}/status`, { data });
       } catch (error) {
         console.error(error);
         throw error;

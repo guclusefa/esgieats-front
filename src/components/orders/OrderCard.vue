@@ -38,8 +38,8 @@ async function closeCurrentOrder() {
 
 async function updateStatus(newStatus: string) {
   try {
-    await ordersStore.updateOrderStatus(props.order.id, newStatus);
-    props.order.order_status = newStatus; // Optimistic UI update
+    await ordersStore.updateOrderStatus(props.order.id, newStatus, loggedUser.id);
+    props.order.order_status = newStatus;
     toast.success('Statut de la commande mis à jour avec succès !');
   } catch (e) {
     console.error('Échec de la mise à jour du statut', e);
