@@ -76,17 +76,25 @@ const handleSubmit = async () => {
 };
 
 const menuItemsStore = useMenuItemsStore();
+const loading = ref(true);
+
 onMounted(async () => {
-    if (!menuItemsStore.menuItems.length) {
-        try {
+    try {
+        if (!menuItemsStore.menuItems.length) {
             await menuItemsStore.fetchMenuItems(props.restaurantId);
-        } catch (error) {
-            toast.error('Erreur lors du chargement des menu du restaurant ' + props.restaurantId);
         }
+    } catch (error) {
+        toast.error('Erreur lors du chargement des menu du restaurant ' + props.restaurantId);
+    } finally {
+        loading.value = false;
+    }
+    if (selectedItems.value.length === 0) {
+        selectedItems.value.push('');
     }
 });
 
-const selectedItems = ref<string[]>(['']); // array of menu item IDs, allow duplicates
+
+const selectedItems = ref<string[]>([]);
 
 const addItem = () => {
     selectedItems.value.push('');
@@ -100,19 +108,28 @@ const removeItem = (index: number) => {
 
 const totalPrice = computed(() => {
     return selectedItems.value.reduce((total, itemId) => {
+        if (!itemId) return total;
         const item = menuItemsStore.menuItems.find(mi => mi.id === itemId);
-        return item ? total + (item.price || 0) : total;
+        return item ? total + Number(item.price) : total;
     }, 0);
-});
+})
 </script>
 
 <template>
     <form class="flex flex-col gap-5" @submit.prevent="handleSubmit">
         <div class="flex flex-col gap-4">
             <div v-for="(item, index) in selectedItems" :key="index" class="flex items-center gap-2">
-                <SelectElement v-model="selectedItems[index]"
-                    :options="menuItemsStore.menuItems.map(item => ({ label: item.name, value: item.id }))"
-                    placeholder="Choisir un menu" />
+                <select
+                    :disabled="loading"
+                    v-model="selectedItems[index]"
+                    class="border border-gray-300 rounded-md px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                    <option value="" disabled selected>Choisir un menu</option>
+                    <option v-for="menuItem in menuItemsStore.menuItems" :key="menuItem.id" :value="menuItem.id">
+                        {{ menuItem.name }}
+                    </option>
+                </select>
+
                 <button type="button" @click="removeItem(index)" class="text-red-500 hover:underline">
                     Supprimer
                 </button>
