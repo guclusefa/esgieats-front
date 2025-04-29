@@ -39,7 +39,9 @@ onMounted(async () => {
       <div class="flex justify-center gap-4">
         <RouterLink to="/users">
           <button
-            class="bg-white text-primary-darkest font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition">
+            class="
+            dark:bg-primary-darkest dark:text-white
+            bg-white text-primary-darkest font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition">
             Explorer les restaurants
           </button>
         </RouterLink>
@@ -58,7 +60,7 @@ onMounted(async () => {
   </div>
 
   <!-- Features Section -->
-  <section class="bg-white py-16 text-gray-800">
+  <section class="bg-white py-16 text-gray-800 dark:bg-black-lightend dark:text-white">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-bold text-center mb-12">Pourquoi choisir EsgEats ?</h2>
       <div class="grid md:grid-cols-3 gap-8 text-center">
@@ -82,7 +84,7 @@ onMounted(async () => {
   </section>
 
   <!-- How it works -->
-  <section class="bg-gray-100 py-16 text-gray-800">
+  <section class="bg-gray-100 py-16 text-gray-800 dark:bg-black-lightend dark:text-white">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-bold text-center mb-12">Comment ça marche ?</h2>
       <div class="grid md:grid-cols-3 gap-8 text-center">
@@ -106,7 +108,7 @@ onMounted(async () => {
   </section>
 
   <!-- About Section -->
-  <section class="bg-white py-16 text-gray-800">
+  <section class="bg-white py-16 text-gray-800 dark:bg-black-lightend dark:text-white">
     <div class="container mx-auto px-4 text-center max-w-3xl">
       <h2 class="text-3xl font-bold mb-6">À propos de EsgEats</h2>
       <p class="text-lg">

@@ -6,7 +6,6 @@ import { useAuthStore } from '@/stores/auth';
 import { getMenuItemNameById, getMenuItemPriceById, getRestaurantNameByMenuItemId, getUserById } from '@/utils/menuItems';
 import { onMounted, ref } from 'vue';
 
-
 const useAuth = useAuthStore();
 let loggedUser: any = null;
 if (useAuth.user) {
@@ -52,10 +51,7 @@ async function updateStatus(newStatus: string) {
 const menuItemNames = ref<Record<string, string>>({});
 const restaurantName = ref<string>('Chargement...');
 const deliveryPersonName = ref<string>('Chargement...');
-
-
 const totalPrice = ref(0);
-
 
 onMounted(async () => {
   let total = 0;
@@ -82,7 +78,6 @@ onMounted(async () => {
     restaurantName.value = name ?? 'Restaurant inconnu';
   }
 
-
   if (props.order.delivery_person_id) {
     const name = await getUserById(props.order.delivery_person_id);
     deliveryPersonName.value = name ?? 'Livreur inconnu';
@@ -92,10 +87,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-6 rounded-2xl shadow-lg bg-white hover:shadow-xl transition-all space-y-4 border border-gray-100">
+  <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-black-lightend hover:shadow-xl transition-all space-y-4 border border-gray-100">
     <!-- Header -->
     <div class="flex justify-between items-center">
-      <h2 class="text-xl font-bold text-gray-800">Commande #{{ order.id }}</h2>
+      <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-lightest to-primary-darkest dark:from-primary-darkest dark:to-primary-lightest group-hover:from-primary-lightest group-hover:to-primary-darkest transition-colors">
+        Commande #{{ order.id }}
+      </h2>
       <span class="text-xs font-semibold px-3 py-1 rounded-full capitalize" :class="{
         'bg-yellow-100 text-yellow-800': order.order_status === 'en_attente',
         'bg-blue-100 text-blue-800': order.order_status === 'en_preparation',
@@ -113,10 +110,8 @@ onMounted(async () => {
       <p><span class="font-medium text-gray-700">Faite le :</span> {{ formatDate(order.created_at) }}</p>
     </div>
 
-
     <!-- Delivery Info (conditionally displayed) -->
-    <div v-if="['en_livraison', 'livre', 'annule'].includes(order.order_status)"
-      class="text-sm text-gray-600 space-y-1">
+    <div v-if="['en_livraison', 'livre', 'annule'].includes(order.order_status)" class="text-sm text-gray-600 space-y-1">
       <p class="text-sm text-gray-600">
         <span class="font-medium text-gray-700">Restaurant :</span> {{ restaurantName }}
       </p>
@@ -131,34 +126,32 @@ onMounted(async () => {
       </p>
     </div>
 
-    <hr class="border-gray-200" />
+    <!-- Divider -->
+    <div class="border-t border-gray-200 dark:border-gray-700"></div>
 
     <!-- Items -->
     <div>
       <h3 class="text-md font-semibold text-gray-800 mb-2">Articles Commandés</h3>
       <ul class="space-y-2">
         <li v-for="item in order.items" :key="item.menu_item_id"
-          class="p-2 bg-gray-50 rounded-md border text-sm text-gray-700">
+          class="p-2 bg-gray-50 rounded-md border text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300">
           <p><strong>Item:</strong> {{ menuItemNames[item.menu_item_id] || 'Chargement...' }}</p>
           <p><strong>Quantité:</strong> {{ item.quantity }}</p>
         </li>
       </ul>
       <!-- Total général -->
-      <p class="mt-4 text-right text-sm font-semibold text-gray-800">
+      <p class="mt-4 text-right text-sm font-semibold text-gray-800 dark:text-gray-200">
         Total de la commande : {{ totalPrice.toFixed(2) }} €
       </p>
     </div>
 
-
-
-
-
+    <!-- Status and Close Buttons for Delivery Person -->
     <template v-if="loggedUser.role === 'livreur'">
       <!-- Status Dropdown -->
       <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="space-y-2">
-        <label for="status-select" class="block text-sm font-semibold text-gray-700">Mettre à jour le statut :</label>
+        <label for="status-select" class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Mettre à jour le statut :</label>
         <select id="status-select" v-model="order.order_status" @change="updateStatus(order.order_status)"
-          class="w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm border">
+          class="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm border">
           <option value="en_attente">En Attente</option>
           <option value="en_livraison">En Livraison</option>
           <option value="livre">Livré</option>
@@ -167,7 +160,7 @@ onMounted(async () => {
       </div>
 
       <!-- Close Button -->
-<!--       <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="pt-2">
+      <!-- <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="pt-2">
         <button @click="closeCurrentOrder"
           class="w-full py-2 px-4 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm font-medium"
           v-if="order.order_status !== 'en_attente' && order.order_status !== 'en_preparation'">
@@ -177,3 +170,7 @@ onMounted(async () => {
     </template>
   </div>
 </template>
+
+<style scoped>
+/* Additional custom styles for this component */
+</style>
