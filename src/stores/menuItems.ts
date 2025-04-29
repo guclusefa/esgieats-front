@@ -15,6 +15,9 @@ export const useMenuItemsStore = defineStore({
       try {
         const response = await api.get(`${url}/${restaurantId}`);
         this.menuItems = response.data;
+        this.menuItems.sort((a, b) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
       } catch (error) {
         console.error(error);
         throw error;
