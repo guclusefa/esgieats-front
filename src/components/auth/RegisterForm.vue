@@ -47,6 +47,7 @@ const handleSubmit = async () => {
     });
     router.push({ name: 'home' }).then(() => {
       toast.success('Inscription réussie');
+      window.location.reload();
     });
   } catch (error) {
     toast.error('Cette adresse email ou nom d\'utilisateur est déjà utilisée');
