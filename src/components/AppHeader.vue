@@ -75,7 +75,10 @@ function logout() {
                   <span class="text-sm font-semibold">{{ user.firstname }}</span>
                 </RouterLink>
                 <span class="text-sm font-semibold" v-else>
-                  {{ user.firstname }} {{ user.lastname }}
+                  {{ user.firstname }} {{ user.lastname }} 
+                  <span class="text-xs font-normal text-gray-500 dark:text-gray-400">
+                  ({{ user.role }})
+                  </span>
                 </span>
                 <ButtonElement @click="logout" title="Déconnexion">Déconnexion</ButtonElement>
               </div>
