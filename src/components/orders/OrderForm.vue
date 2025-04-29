@@ -9,6 +9,13 @@ import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import ButtonElement from '../elements/ButtonElement.vue';
 import type { Order } from '@/types/Order';
+import { useAuthStore } from '@/stores/auth';
+
+const useAuth = useAuthStore();
+let loggedUser: any = null;
+if (useAuth.user) {
+  loggedUser = useAuth.user;
+}
 
 const router = useRouter();
 const props = defineProps({
@@ -26,12 +33,10 @@ const props = defineProps({
     }
 });
 
-const orderRef = ref<Order>({
+const orderRef = ref<Object>({
     id: '',
-    client_id: '',
-    order_status: 'en_attente',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    client_id: loggedUser.id,
+    order_status: 'en_attente'
 });
 
 if (props.order) {
