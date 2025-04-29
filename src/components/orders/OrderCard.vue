@@ -61,6 +61,25 @@ async function updateStatus(newStatus: string) {
       <p><strong>Créée le :</strong> {{ formatDate(order.created_at) }}</p>
     </div>
 
+    <div class="mt-4">
+      <h3 class="text-md font-semibold">Articles Commandés :</h3>
+      <ul class="list-disc pl-5">
+        <li v-for="item in order.items" :key="item.menu_item_id" class="py-1">
+          <p><strong>Menu Item ID:</strong> {{ item.menu_item_id }}</p>
+          <p><strong>Quantité:</strong> {{ item.quantity }}</p>
+          <p><strong>Statut:</strong> 
+            <span :class="{
+              'text-blue-600': item.item_status === 'en_preparation',
+              'text-green-600': item.item_status === 'pret',
+              'text-yellow-600': item.item_status === 'en_attente',
+            }">
+              {{ item.item_status }}
+            </span>
+          </p>
+        </li>
+      </ul>
+    </div>
+
     <!-- Status Update Dropdown (only visible if not closed) -->
     <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="pt-2">
       <label for="status-select" class="block text-sm font-semibold text-gray-700">Mettre à jour le statut :</label>

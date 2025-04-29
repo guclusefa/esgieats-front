@@ -100,12 +100,14 @@ const handleSubmit = async () => {
                 .map(item => ({
                     menu_item_id: parseInt(item.id),
                     quantity: item.quantity
-                }))
+                })),
+            order_status: 'en_attente'
         };
 
         await ordersStore.createOrder(order);
-        router.push({ name: 'orders' });
-        toast.success(props.edit ? 'Order modifié avec succès' : 'Order ajouté avec succès');
+        router.push({ name: 'orders' }).then(() => {
+            window.location.reload();
+        });
     } catch (error) {
         toast.error(props.edit ? 'Erreur lors de la modification' : "Erreur lors de l'ajout");
     }

@@ -14,6 +14,7 @@ export const useOrdersStore = defineStore({
     async fetchOrders(userId: string) {
       try {
         const response = await api.get(`${url}/${userId}`);
+        console.log('Fetched orders:', response.data);
         this.orders = response.data;
       } catch (error) {
         console.error(error);
