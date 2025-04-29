@@ -11,6 +11,7 @@ import { toast } from 'vue3-toastify';
 import MenuItemList from '@/components/menuItems/MenuItemList.vue';
 import { useAuthStore } from '@/stores/auth';
 import OrderAddButton from '@/components/orders/OrderAddButton.vue';
+import MenuItemAddButton from '@/components/menuItems/MenuItemAddButton.vue';
 
 const useAuth = useAuthStore();
 let loggedUser: any = null;
@@ -58,9 +59,11 @@ onMounted(async () => {
         <template v-if="usersStore.user.id">
             <UserCard :user="usersStore.user" />
             <SectionElement title="Menu" class="mt-5">
-                <template #actions
-                    v-if="loggedUser && (loggedUser.role === 'client' || loggedUser.role === 'admin') && !isUserMe">
-                    <OrderAddButton :restaurantId="usersStore.user.id" />
+                <template #actions>
+                    <MenuItemAddButton :restaurantId="usersStore.user.id"
+                        v-if="loggedUser && (loggedUser.role === 'restaurant' || loggedUser.role === 'admin') && isUserMe" />
+                    <OrderAddButton :restaurantId="usersStore.user.id"
+                        v-if="loggedUser && (loggedUser.role === 'client' || loggedUser.role === 'admin') && !isUserMe" />
                 </template>
                 <template #content>
                     <MenuItemList :menuItems="menuItemsStore.menuItems" />

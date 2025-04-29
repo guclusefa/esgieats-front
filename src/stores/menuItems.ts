@@ -29,22 +29,19 @@ export const useMenuItemsStore = defineStore({
         throw error;
       }
     },
-    async createMenuItem(restaurantId: string) {
+    async createMenuItem(menuItem: MenuItem) {
       try {
-        const response = await api.post(`${url}/${restaurantId}`, this.menuItem);
-        this.menuItems.push(response.data);
+        await api.post(`${url}/${menuItem.restaurant_id}`, menuItem);
       } catch (error) {
         console.error(error);
         throw error;
       }
     },
-    async updateMenuItem(restaurantId: string, menuId: string) {
+    async updateMenuItem(menuItem: MenuItem) {
+      const id = menuItem.id;
+      const updatedMenuItem = { ...menuItem };
       try {
-        const response = await api.put(`${url}/${restaurantId}/${menuId}`, this.menuItem)
-        const index = this.menuItems.findIndex(item => item.id === menuId);
-        if (index !== -1) {
-          this.menuItems[index] = response.data;
-        }
+        await api.put(`${url}/${menuItem.restaurant_id}/${id}`, updatedMenuItem);
       } catch (error) {
         console.error(error);
         throw error;
