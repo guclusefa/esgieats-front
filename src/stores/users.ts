@@ -23,7 +23,7 @@ export const useUsersStore = defineStore({
     async fetchUser(id: string) {
       try {
         const response = await api.get(`${url}/${id}`);
-        this.user = response.data;
+        this.user = response.data[0];
       } catch (error) {
         console.error(error);
         throw error;

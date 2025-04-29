@@ -18,16 +18,23 @@ const menuItemsStore = useMenuItemsStore();
 
 onMounted(async () => {
     if (typeof params.id === 'string') {
+        usersStore.resetUser();
+        menuItemsStore.resetMenuItems();
+
         try {
-            usersStore.resetUser();
-            menuItemsStore.resetMenuItems();
             await usersStore.fetchUser(params.id);
+        } catch (error) {
+            toast.error("Erreur lors du chargement de l'utilisateur.");
+        }
+
+        try {
             await menuItemsStore.fetchMenuItems(params.id);
         } catch (error) {
-            toast.error("Erreur lors du chargement du user ou du menu.");
+            toast.error("Erreur lors du chargement du menu.");
         }
     }
 });
+
 </script>
 
 <template>

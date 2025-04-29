@@ -29,10 +29,8 @@ function logout() {
 </script>
 
 <template>
-  <header
-    id="topbar"
-    class="fixed top-0 left-0 right-0 h-16 z-[100] bg-white dark:bg-black-lightend shadow dark:shadow-[0_0_10px_#000000]"
-  >
+  <header id="topbar"
+    class="fixed top-0 left-0 right-0 h-16 z-[100] bg-white dark:bg-black-lightend shadow dark:shadow-[0_0_10px_#000000]">
     <WrapperElement>
       <nav class="flex justify-between items-center">
         <div class="flex items-center gap-2 sm:gap-0">
@@ -41,7 +39,7 @@ function logout() {
               <LogoImage />
               <span class="text-2xl font-semibold hidden sm:block">{{
                 getAppName().toString()
-              }}</span>
+                }}</span>
             </RouterLink>
           </div>
           <div class="flex items-center gap-5">
@@ -68,10 +66,17 @@ function logout() {
             <template v-if="useAuth.user && user.id">
               <IconElement class="relative">
                 <BellIcon class="w-6 h-6" />
-                <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">3</span>
+                <span
+                  class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-semibold flex items-center justify-center rounded-full">3</span>
               </IconElement>
               <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold">{{ user.firstname }}</span>
+                <RouterLink :to="{ name: 'user', params: { id: user.id } }" class="flex items-center gap-1"
+                  v-if="user.role === 'restaurant'">
+                  <span class="text-sm font-semibold">{{ user.firstname }}</span>
+                </RouterLink>
+                <span class="text-sm font-semibold" v-else>
+                  {{ user.firstname }} {{ user.lastname }}
+                </span>
                 <ButtonElement @click="logout" title="Déconnexion">Déconnexion</ButtonElement>
               </div>
             </template>
