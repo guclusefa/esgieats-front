@@ -58,7 +58,8 @@ onMounted(async () => {
         <template v-if="usersStore.user.id">
             <UserCard :user="usersStore.user" />
             <SectionElement title="Menu" class="mt-5">
-                <template #actions v-if="loggedUser && loggedUser.role === 'client' && !isUserMe">
+                <template #actions
+                    v-if="loggedUser && (loggedUser.role === 'client' || loggedUser.role === 'admin') && !isUserMe">
                     <OrderAddButton />
                 </template>
                 <template #content>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SectionElement from '@/components/elements/SectionElement.vue';
 import SpinnerElement from '@/components/elements/SpinnerElement.vue';
 import WrapperElement from '@/components/elements/WrapperElement.vue';
 import UserList from '@/components/users/UserList.vue';
@@ -42,11 +41,7 @@ onMounted(async () => {
   </div>
 
   <WrapperElement>
-    <SectionElement title="Restaurants">
-      <template #content>
-        <SpinnerElement large v-if="loading" />
-        <UserList :users="usersStore.users" v-else />
-      </template>
-    </SectionElement>
+    <SpinnerElement large v-if="loading" />
+    <UserList :users="usersStore.users" v-else />
   </WrapperElement>
 </template>
