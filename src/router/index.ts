@@ -10,6 +10,8 @@ import UserView from '../views/users/UserView.vue';
 
 import DeliveriesView from '../views/deliveries/DeliveriesView.vue';
 
+import OrdersView from '../views/orders/OrdersView.vue';
+
 import { setDocumentTitle } from '@/utils/document';
 
 const router = createRouter({
@@ -52,6 +54,12 @@ const router = createRouter({
       path: '/deliveries',
       name: 'deliveries',
       component: DeliveriesView
+    },
+    // ORDERS
+    {
+      path: '/orders',
+      name: 'orders',
+      component: OrdersView
     }
   ]
 });
