@@ -3,7 +3,7 @@ import type { Order } from '@/types/Order';
 import { useOrdersStore } from '@/stores/orders';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
-import { getMenuItemNameById, getMenuItemPriceById, getRestaurantNameByMenuItemId } from '@/utils/menuItems';
+import { getMenuItemNameById, getMenuItemPriceById, getRestaurantNameByMenuItemId, getUserById } from '@/utils/menuItems';
 import { onMounted, ref } from 'vue';
 
 
@@ -51,6 +51,7 @@ async function updateStatus(newStatus: string) {
 
 const menuItemNames = ref<Record<string, string>>({});
 const restaurantName = ref<string>('Chargement...');
+const deliveryPersonName = ref<string>('Chargement...');
 
 
 const totalPrice = ref(0);
@@ -81,6 +82,11 @@ onMounted(async () => {
     restaurantName.value = name ?? 'Restaurant inconnu';
   }
 
+
+  if (props.order.delivery_person_id) {
+    const name = await getUserById(props.order.delivery_person_id);
+    deliveryPersonName.value = name ?? 'Livreur inconnu';
+  }
 });
 
 </script>
@@ -114,8 +120,8 @@ onMounted(async () => {
       <p class="text-sm text-gray-600">
         <span class="font-medium text-gray-700">Restaurant :</span> {{ restaurantName }}
       </p>
-      <p v-if="order.delivery_person_id">
-        <span class="font-medium text-gray-700">Livreur ID :</span> {{ order.delivery_person_id }}
+      <p class="text-sm text-gray-600" v-if="order.delivery_person_id">
+        <span class="font-medium text-gray-700">Livreur :</span> {{ deliveryPersonName }}
       </p>
       <p v-if="order.pickup_time">
         <span class="font-medium text-gray-700">Heure de prise en charge :</span> {{ formatDate(order.pickup_time) }}
@@ -161,13 +167,13 @@ onMounted(async () => {
       </div>
 
       <!-- Close Button -->
-      <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="pt-2">
+<!--       <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="pt-2">
         <button @click="closeCurrentOrder"
           class="w-full py-2 px-4 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm font-medium"
           v-if="order.order_status !== 'en_attente' && order.order_status !== 'en_preparation'">
           Fermer la commande
         </button>
-      </div>
+      </div> -->
     </template>
   </div>
 </template>

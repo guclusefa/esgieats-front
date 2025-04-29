@@ -78,3 +78,23 @@ export async function getRestaurantNameByMenuItemId(id: string): Promise<string 
     throw error;
   }
 }
+
+export async function getUserById(id: string): Promise<string | undefined> {
+  try {
+    const response = await api.get('/users/allLivreurs');
+    const users = response.data as { id: string; firstname: string }[];
+
+    const user = users.find((user) => user.id === id);
+
+    if (!user) {
+      console.warn(`Livreur avec ID ${id} non trouvé.`);
+      return undefined;
+    }
+
+    return user.firstname;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des livreurs:', error);
+    throw error;
+  }
+}
+
