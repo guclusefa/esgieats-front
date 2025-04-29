@@ -3,8 +3,9 @@ import type { Order } from '@/types/Order';
 import { useOrdersStore } from '@/stores/orders';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
-import { getMenuItemNameById, getMenuItemPriceById } from '@/utils/menuItems';
+import { getMenuItemNameById, getMenuItemPriceById, getRestaurantNameByMenuItemId } from '@/utils/menuItems';
 import { onMounted, ref } from 'vue';
+
 
 const useAuth = useAuthStore();
 let loggedUser: any = null;
@@ -49,6 +50,8 @@ async function updateStatus(newStatus: string) {
 }
 
 const menuItemNames = ref<Record<string, string>>({});
+const restaurantName = ref<string>('Chargement...');
+
 
 const totalPrice = ref(0);
 
@@ -71,6 +74,13 @@ onMounted(async () => {
   }
 
   totalPrice.value = total;
+
+  if (props.order.items.length > 0) {
+    const firstItemId = props.order.items[0].menu_item_id;
+    const name = await getRestaurantNameByMenuItemId(firstItemId);
+    restaurantName.value = name ?? 'Restaurant inconnu';
+  }
+
 });
 
 </script>
@@ -101,6 +111,9 @@ onMounted(async () => {
     <!-- Delivery Info (conditionally displayed) -->
     <div v-if="['en_livraison', 'livre', 'annule'].includes(order.order_status)"
       class="text-sm text-gray-600 space-y-1">
+      <p class="text-sm text-gray-600">
+        <span class="font-medium text-gray-700">Restaurant :</span> {{ restaurantName }}
+      </p>
       <p v-if="order.delivery_person_id">
         <span class="font-medium text-gray-700">Livreur ID :</span> {{ order.delivery_person_id }}
       </p>

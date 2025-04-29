@@ -49,3 +49,32 @@ export async function getMenuItemPriceById(id: string): Promise<number | null> {
   }
   return price;
 }
+
+export async function getRestaurantNameByMenuItemId(id: string): Promise<string | undefined> {
+  try {
+    const menuItems = await fetchAllMenuItems();
+    const menuItem = menuItems.find((item) => item.id === id);
+
+    if (!menuItem) {
+      console.warn(`Menu item with ID ${id} not found.`);
+      return undefined;
+    }
+
+    const restaurantId = menuItem.restaurant_id;
+
+    const response = await api.get('/users/all');
+    const users = response.data as { id: string; firstname: string ; lastname: string }[];
+
+    const restaurant = users.find((user) => user.id === restaurantId);
+
+    if (!restaurant) {
+      console.warn(`Restaurant with ID ${restaurantId} not found.`);
+      return undefined;
+    }
+
+    return restaurant.firstname + ' ' + restaurant.lastname;
+  } catch (error) {
+    console.error(`Failed to get restaurant name for menu item ID ${id}:`, error);
+    throw error;
+  }
+}
