@@ -6,4 +6,5 @@ export interface User {
   adress: string;
   phone: string;
   firstname: string;
+  created_at: string;
 }

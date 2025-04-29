@@ -40,13 +40,9 @@ onMounted(async () => {
 <template>
     <WrapperElement>
         <template v-if="usersStore.user.id">
-            <SectionElement :title="`${usersStore.user.firstname}`">
-                <template #content>
-                    <UserCard :user="usersStore.user" />
-                </template>
-            </SectionElement>
+            <UserCard :user="usersStore.user" />
 
-            <SectionElement title="Menu">
+            <SectionElement title="Menu" class="mt-5">
                 <template #content>
                     <MenuItemList :menuItems="menuItemsStore.menuItems" />
                 </template>
