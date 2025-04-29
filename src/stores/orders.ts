@@ -54,7 +54,8 @@ export const useOrdersStore = defineStore({
           delivery_person_id: deliveryPersonId,
           status: status
         };
-        await api.put(`${url}/${id}/status`, { data });
+        console.log('Updating order status:', data);
+        await api.put(`${url}/${id}/status`, data);
       } catch (error) {
         console.error(error);
         throw error;

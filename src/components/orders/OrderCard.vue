@@ -99,7 +99,8 @@ async function updateStatus(newStatus: string) {
       <!-- Close Button -->
       <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="pt-2">
         <button @click="closeCurrentOrder"
-          class="w-full py-2 px-4 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm font-medium">
+          class="w-full py-2 px-4 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm font-medium"
+          v-if="order.order_status !== 'en_attente' && order.order_status !== 'en_preparation'">
           Fermer la commande
         </button>
       </div>
