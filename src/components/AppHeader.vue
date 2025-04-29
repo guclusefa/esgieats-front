@@ -39,7 +39,7 @@ function logout() {
               <LogoImage />
               <span class="text-2xl font-semibold hidden sm:block">{{
                 getAppName().toString()
-                }}</span>
+              }}</span>
             </RouterLink>
           </div>
           <div class="flex items-center gap-5">
@@ -72,12 +72,17 @@ function logout() {
               <div class="flex items-center gap-2">
                 <RouterLink :to="{ name: 'user', params: { id: user.id } }" class="flex items-center gap-1"
                   v-if="user.role === 'restaurant'">
-                  <span class="text-sm font-semibold">{{ user.firstname }}</span>
+                  <span class="text-sm font-semibold">{{ user.firstname }}
+                    {{ user.lastname }}
+                    <span class="text-xs font-normal text-gray-500 dark:text-gray-400">
+                      ({{ user.role }})
+                    </span>
+                  </span>
                 </RouterLink>
                 <span class="text-sm font-semibold" v-else>
-                  {{ user.firstname }} {{ user.lastname }} 
+                  {{ user.firstname }} {{ user.lastname }}
                   <span class="text-xs font-normal text-gray-500 dark:text-gray-400">
-                  ({{ user.role }})
+                    ({{ user.role }})
                   </span>
                 </span>
                 <ButtonElement @click="logout" title="Déconnexion">Déconnexion</ButtonElement>
