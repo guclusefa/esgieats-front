@@ -90,8 +90,6 @@ async function updateStatus(newStatus: string) {
         <select id="status-select" v-model="order.order_status" @change="updateStatus(order.order_status)"
           class="w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm border">
           <option value="en_attente">En Attente</option>
-          <option value="en_preparation">En Préparation</option>
-          <option value="pret">Prêt</option>
           <option value="en_livraison">En Livraison</option>
           <option value="livre">Livré</option>
           <option value="annule">Annulé</option>
