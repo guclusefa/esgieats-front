@@ -50,6 +50,5 @@ npm run build # pour le mode production
 npm run preview # pour prévisualiser la version de production
 ```
 
-### 5. Accéder à l'application
+### 6. Accéder à l'application
 Ouvrez votre navigateur et accédez à `http://localhost:5173` pour voir l'application en action.
----
