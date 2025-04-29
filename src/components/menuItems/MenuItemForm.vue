@@ -42,7 +42,7 @@ const menuItemRef = ref<MenuItem>({
     restaurant_id: props.restaurantId,
     name: '',
     description: '',
-    price: 0,
+    price: 10.50,
     available: true,
     created_at: new Date().toISOString()
 });
@@ -67,10 +67,9 @@ const handleSubmit = async () => {
             await menuItemsStore.createMenuItem(menuItemRef.value);
         }
 
-        toast.success(props.edit ? 'Item modifié avec succès' : 'SignalemItement ajouté avec succès');
+        toast.success(props.edit ? 'Item modifié avec succès' : 'Item ajouté avec succès');
         $emit('close');
         await menuItemsStore.fetchMenuItems(props.restaurantId);
-        router.push({ name: 'signalements' });
     } catch (error) {
         toast.error(props.edit ? 'Erreur lors de la modification' : "Erreur lors de l'ajout");
     }
@@ -101,7 +100,8 @@ const handleSubmit = async () => {
                 <LabelElement>Prix</LabelElement>
             </template>
             <template #input>
-                <InputElement v-model="menuItemRef.price" type="number" placeholder="Prix de l'item" required />
+                <InputElement v-model="menuItemRef.price" type="number" placeholder="Prix de l'item" required
+                    step="0.01" min="0" />
             </template>
         </InputgroupElement>
         <InputgroupElement>

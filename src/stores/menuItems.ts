@@ -47,7 +47,7 @@ export const useMenuItemsStore = defineStore({
         throw error;
       }
     },
-    async deleteMenuItems(id: string) {
+    async deleteMenuItem(id: string) {
       try {
         await api.delete(`${url}/${id}`);
       } catch (error) {

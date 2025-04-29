@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import type { MenuItem } from '@/types/MenuItem';
+import MenuItemEditButton from './MenuItemEditButton.vue';
+import MenuItemDeleteButton from './MenuItemDeleteButton.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const props = defineProps<{
     menuItem: MenuItem;
 }>();
+
+const useAuth = useAuthStore();
+let loggedUser: any = null;
+if (useAuth.user) {
+  loggedUser = useAuth.user;
+}
 </script>
 
 <template>
@@ -18,5 +27,9 @@ const props = defineProps<{
             <p class="text-xs text-gray-400"><strong>Ajouté le:</strong> {{ new
                 Date(menuItem.created_at).toLocaleDateString() }}</p>
         </div>
+        <footer class="flex items-center gap-2" v-if="menuItem.restaurant_id && menuItem.restaurant_id === loggedUser.id || loggedUser.role === 'admin'">
+            <MenuItemEditButton :menuItem="menuItem" :restaurantId="menuItem.restaurant_id" />
+            <MenuItemDeleteButton :menuItem="menuItem" />
+        </footer>
     </div>
 </template>
