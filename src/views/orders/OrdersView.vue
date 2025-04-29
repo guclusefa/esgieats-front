@@ -21,7 +21,8 @@ onMounted(async () => {
     if (!ordersStore.orders.length) {
         try {
             loading.value = true;
-            await ordersStore.fetchOrders(loggedUser?.id);
+            await ordersStore.fetchOrders();
+            console.log('Orders fetched successfully:', ordersStore.orders);
         } catch (error) {
             toast.error('Erreur lors du chargement des commandes.');
         } finally {

@@ -117,18 +117,4 @@ onMounted(async () => {
       </p>
     </div>
   </section>
-
-  <!-- Contact Section -->
-  <section class="bg-primary-lightest py-16 text-gray-900">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-6">Contact & Support</h2>
-      <p class="mb-4">Une question, un souci ? Notre équipe est là pour vous aider 7j/7.</p>
-      <div class="flex flex-col items-center gap-2">
-        <p>📞 Téléphone : 01 23 45 67 89</p>
-        <p>📧 Email : support@esgeats.fr</p>
-        <p>🏢 Adresse : 15 Rue Gustave Eiffel, 38000 Grenoble</p>
-        <p>🕒 Horaires : Lun - Dim : 10h - 22h</p>
-      </div>
-    </div>
-  </section>
 </template>

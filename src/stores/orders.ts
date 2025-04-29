@@ -11,9 +11,9 @@ export const useOrdersStore = defineStore({
     order: {} as Order
   }),
   actions: {
-    async fetchOrders(userId: string) {
+    async fetchOrders() {
       try {
-        const response = await api.get(`${url}/${userId}`);
+        const response = await api.get(`${url}`);
         console.log('Fetched orders:', response.data);
         this.orders = response.data;
       } catch (error) {
