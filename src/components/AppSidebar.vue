@@ -28,6 +28,13 @@ onMounted(() => {
   watchEscapeKey();
 });
 
+const useAuth = useAuthStore();
+
+let user: any = null;
+if (useAuth.user) {
+  user = useAuth.user;
+}
+
 const navLinks = [
   {
     name: 'home',
@@ -43,13 +50,13 @@ const navLinks = [
     iconSolid: UserGroupIconSolid,
     needsAuth: false
   },
-  {
+/*   {
     name: 'deliveries',
     label: 'Mes Livraisons',
     icon: UserGroupIcon,
     iconSolid: UserGroupIconSolid,
     needsAuth: true
-  },
+  }, */
   {
     name: 'orders',
     label: 'Mes Commandes',
@@ -58,14 +65,6 @@ const navLinks = [
     needsAuth: true
   },
 ];
-
-
-const useAuth = useAuthStore();
-
-let user: any = null;
-if (useAuth.user) {
-  user = useAuth.user;
-}
 </script>
 
 <template>
