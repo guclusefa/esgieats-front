@@ -3,6 +3,8 @@ import type { Order } from '@/types/Order';
 import { useOrdersStore } from '@/stores/orders';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth';
+import { getMenuItemNameById, getMenuItemPriceById } from '@/utils/menuItems';
+import { onMounted, ref } from 'vue';
 
 const useAuth = useAuthStore();
 let loggedUser: any = null;
@@ -45,6 +47,32 @@ async function updateStatus(newStatus: string) {
     console.error('Échec de la mise à jour du statut', e);
   }
 }
+
+const menuItemNames = ref<Record<string, string>>({});
+
+const totalPrice = ref(0);
+
+
+onMounted(async () => {
+  let total = 0;
+
+  for (const item of props.order.items) {
+    const name = await getMenuItemNameById(item.menu_item_id);
+    const price = await getMenuItemPriceById(item.menu_item_id);
+
+    let label = name ?? 'Inconnu';
+
+    if (price != null) {
+      label += ` - ${price} €`;
+      total += price * item.quantity;
+    }
+
+    menuItemNames.value[item.menu_item_id] = label;
+  }
+
+  totalPrice.value = total;
+});
+
 </script>
 
 <template>
@@ -92,11 +120,16 @@ async function updateStatus(newStatus: string) {
       <ul class="space-y-2">
         <li v-for="item in order.items" :key="item.menu_item_id"
           class="p-2 bg-gray-50 rounded-md border text-sm text-gray-700">
-          <p><strong>Menu Item ID:</strong> {{ item.menu_item_id }}</p>
+          <p><strong>Item:</strong> {{ menuItemNames[item.menu_item_id] || 'Chargement...' }}</p>
           <p><strong>Quantité:</strong> {{ item.quantity }}</p>
         </li>
       </ul>
+      <!-- Total général -->
+      <p class="mt-4 text-right text-sm font-semibold text-gray-800">
+        Total de la commande : {{ totalPrice.toFixed(2) }} €
+      </p>
     </div>
+
 
 
 
