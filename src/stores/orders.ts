@@ -29,8 +29,9 @@ export const useOrdersStore = defineStore({
         throw error;
       }
     },
-    async createOrder(order: Order) {
+    async createOrder(order: any) {
       try {
+        console.log('Creating order:', order);
         const response = await api.post(url, order);
         this.orders.push(response.data);
       } catch (error) {
