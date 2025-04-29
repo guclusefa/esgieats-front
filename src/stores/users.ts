@@ -13,7 +13,7 @@ export const useUsersStore = defineStore({
   actions: {
     async fetchUsers() {
       try {
-        const response = await api.get(url);
+        const response = await api.get(`${url}/all`);
         this.users = response.data;
       } catch (error) {
         console.error(error);
