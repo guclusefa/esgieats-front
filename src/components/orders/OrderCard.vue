@@ -69,6 +69,21 @@ async function updateStatus(newStatus: string) {
       <p><span class="font-medium text-gray-700">Faite le :</span> {{ formatDate(order.created_at) }}</p>
     </div>
 
+
+    <!-- Delivery Info (conditionally displayed) -->
+    <div v-if="['en_livraison', 'livre', 'annule'].includes(order.order_status)"
+      class="text-sm text-gray-600 space-y-1">
+      <p v-if="order.delivery_person_id">
+        <span class="font-medium text-gray-700">Livreur ID :</span> {{ order.delivery_person_id }}
+      </p>
+      <p v-if="order.pickup_time">
+        <span class="font-medium text-gray-700">Heure de prise en charge :</span> {{ formatDate(order.pickup_time) }}
+      </p>
+      <p v-if="order.order_status === 'livre' && order.delivery_time">
+        <span class="font-medium text-gray-700">Heure de livraison :</span> {{ formatDate(order.delivery_time) }}
+      </p>
+    </div>
+
     <hr class="border-gray-200" />
 
     <!-- Items -->
@@ -82,6 +97,9 @@ async function updateStatus(newStatus: string) {
         </li>
       </ul>
     </div>
+
+
+
 
     <template v-if="loggedUser.role === 'livreur'">
       <!-- Status Dropdown -->
