@@ -5,8 +5,8 @@ import {
   toggleAppSidebarWithTransition,
   toggleAppSidebarWithTransitionOnMobile
 } from '@/utils/app';
-import { HomeIcon, UserGroupIcon, UsersIcon } from '@heroicons/vue/24/outline';
-import { HomeIcon as HomeIconSolid, UserGroupIcon as UserGroupIconSolid, UsersIcon as UsersIconSolid } from '@heroicons/vue/24/solid';
+import { HomeIcon, UserGroupIcon, UsersIcon, BanknotesIcon, BuildingStorefrontIcon } from '@heroicons/vue/24/outline';
+import { HomeIcon as HomeIconSolid, UserGroupIcon as UserGroupIconSolid, UsersIcon as UsersIconSolid , BanknotesIcon as BanknotesIconSolid, BuildingStorefrontIcon as BuildingStorefrontIconSolid} from '@heroicons/vue/24/solid';
 import { onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import WrapperElement from './elements/WrapperElement.vue';
@@ -46,8 +46,8 @@ const navLinks = [
   {
     name: 'users',
     label: 'Restaurants',
-    icon: UserGroupIcon,
-    iconSolid: UserGroupIconSolid,
+    icon: BuildingStorefrontIcon,
+    iconSolid: BuildingStorefrontIconSolid,
     needsAuth: false
   },
 /*   {
@@ -60,8 +60,8 @@ const navLinks = [
   {
     name: 'orders',
     label: 'Mes Commandes',
-    icon: UserGroupIcon,
-    iconSolid: UserGroupIconSolid,
+    icon: BanknotesIcon,
+    iconSolid: BanknotesIconSolid,
     needsAuth: true
   },
 ];
