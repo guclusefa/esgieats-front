@@ -49,34 +49,10 @@ if (props.order) {
 
 const $emit = defineEmits(['close']);
 const ordersStore = useOrdersStore();
-
-const handleSubmit = async () => {
-    /*     if (!orderRef.value.title) {
-            toast.error('Veuillez remplir tous les champs');
-            return;
-        }
-     */
-    try {
-        // create a new order from the orderRef object
-        let order = {
-            ...orderRef.value,
-            client_id: loggedUser.id,
-            order_status: 'en_attente',
-            menu_items: selectedItems.value
-        };
-
-        await ordersStore.createOrder(order);
-        toast.success(props.edit ? 'Order modifié avec succès' : 'Order ajouté avec succès');
-        $emit('close');
-        /* await ordersStore.fetchOrders(); */
-        router.push({ name: 'orders' });
-    } catch (error) {
-        toast.error(props.edit ? 'Erreur lors de la modification' : "Erreur lors de l'ajout");
-    }
-};
-
 const menuItemsStore = useMenuItemsStore();
 const loading = ref(true);
+
+const selectedItems = ref<{ id: string; quantity: number }[]>([]);
 
 onMounted(async () => {
     try {
@@ -87,17 +63,14 @@ onMounted(async () => {
         toast.error('Erreur lors du chargement des menu du restaurant ' + props.restaurantId);
     } finally {
         loading.value = false;
-    }
-    if (selectedItems.value.length === 0) {
-        selectedItems.value.push('');
+        if (selectedItems.value.length === 0) {
+            selectedItems.value.push({ id: '', quantity: 1 });
+        }
     }
 });
 
-
-const selectedItems = ref<string[]>([]);
-
 const addItem = () => {
-    selectedItems.value.push('');
+    selectedItems.value.push({ id: '', quantity: 1 });
 };
 
 const removeItem = (index: number) => {
@@ -107,39 +80,80 @@ const removeItem = (index: number) => {
 };
 
 const totalPrice = computed(() => {
-    return selectedItems.value.reduce((total, itemId) => {
-        if (!itemId) return total;
-        const item = menuItemsStore.menuItems.find(mi => mi.id === itemId);
-        return item ? total + Number(item.price) : total;
+    return selectedItems.value.reduce((total, item) => {
+        if (!item.id) return total;
+        const menuItem = menuItemsStore.menuItems.find(mi => mi.id === item.id);
+        return menuItem ? total + Number(menuItem.price) * item.quantity : total;
     }, 0);
-})
+});
+
+const handleSubmit = async () => {
+    try {
+        if (!selectedItems.value.length) {
+            toast.error('Veuillez ajouter au moins un menu à la commande');
+            return;
+        }
+        const order = {
+            clientId: loggedUser.id,
+            items: selectedItems.value
+                .filter(item => item.id)
+                .map(item => ({
+                    menu_item_id: parseInt(item.id),
+                    quantity: item.quantity
+                }))
+        };
+
+        await ordersStore.createOrder(order);
+        router.push({ name: 'orders' });
+        toast.success(props.edit ? 'Order modifié avec succès' : 'Order ajouté avec succès');
+    } catch (error) {
+        toast.error(props.edit ? 'Erreur lors de la modification' : "Erreur lors de l'ajout");
+    }
+};
 </script>
+
 
 <template>
     <form class="flex flex-col gap-5" @submit.prevent="handleSubmit">
         <div class="flex flex-col gap-4">
-            <div v-for="(item, index) in selectedItems" :key="index" class="flex items-center gap-2">
+            <div
+                v-for="(item, index) in selectedItems"
+                :key="index"
+                class="flex items-center gap-3"
+            >
                 <select
+                    v-model="selectedItems[index].id"
                     :disabled="loading"
-                    v-model="selectedItems[index]"
                     class="border border-gray-300 rounded-md px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                    <option value="" disabled selected>Choisir un menu</option>
-                    <option v-for="menuItem in menuItemsStore.menuItems" :key="menuItem.id" :value="menuItem.id">
+                    <option value="" disabled>Choisir un menu</option>
+                    <option
+                        v-for="menuItem in menuItemsStore.menuItems"
+                        :key="menuItem.id"
+                        :value="menuItem.id"
+                    >
                         {{ menuItem.name }}
                     </option>
                 </select>
+
+                <input
+                    type="number"
+                    min="1"
+                    v-model.number="selectedItems[index].quantity"
+                    class="w-20 border border-gray-300 rounded-md px-2 py-1"
+                />
 
                 <button type="button" @click="removeItem(index)" class="text-red-500 hover:underline">
                     Supprimer
                 </button>
             </div>
+
             <button type="button" @click="addItem" class="text-blue-500 hover:underline self-start">
                 + Ajouter un menu
             </button>
         </div>
 
-        <footer class="flex justify-end gap-2 items-center justify-between">
+        <footer class="flex justify-between items-center">
             <div class="font-semibold">
                 Total: {{ totalPrice.toFixed(2) }} €
             </div>
@@ -150,3 +164,4 @@ const totalPrice = computed(() => {
         </footer>
     </form>
 </template>
+
