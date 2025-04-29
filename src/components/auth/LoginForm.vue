@@ -29,7 +29,7 @@ const handleSubmit = async () => {
     router.push({ name: 'home' }).then(() => {
       window.location.reload();
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error.response && error.response.status === 403) {
       toast.error("Votre compte n'est pas encore vérifié. Veuillez vérifier votre email.");
     } else {

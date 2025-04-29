@@ -46,7 +46,7 @@ const handleSubmit = async () => {
       firstname: user.value.firstname
     });
     router.push({ name: 'home' }).then(() => {
-      toast.success('Un email de confirmation vous a été envoyé');
+      toast.success('Inscription réussie');
     });
   } catch (error) {
     toast.error('Cette adresse email ou nom d\'utilisateur est déjà utilisée');

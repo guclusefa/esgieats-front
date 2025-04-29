@@ -64,6 +64,12 @@ export const useAuthStore = defineStore({
         if (response.status < 200 || response.status >= 300) {
           throw new Error('Invalid response');
         }
+        // Login after registration
+        const formattedCreditionals = {
+          email: credentials.email,
+          password: credentials.password
+        };
+        await this.login(formattedCreditionals);
       } catch (error) {
         console.error(error);
         throw error;
