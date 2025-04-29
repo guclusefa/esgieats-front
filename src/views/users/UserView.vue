@@ -60,7 +60,7 @@ onMounted(async () => {
             <SectionElement title="Menu" class="mt-5">
                 <template #actions
                     v-if="loggedUser && (loggedUser.role === 'client' || loggedUser.role === 'admin') && !isUserMe">
-                    <OrderAddButton />
+                    <OrderAddButton :restaurantId="usersStore.user.id" />
                 </template>
                 <template #content>
                     <MenuItemList :menuItems="menuItemsStore.menuItems" />

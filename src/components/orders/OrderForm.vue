@@ -10,11 +10,12 @@ import { toast } from 'vue3-toastify';
 import ButtonElement from '../elements/ButtonElement.vue';
 import type { Order } from '@/types/Order';
 import { useAuthStore } from '@/stores/auth';
+import { useMenuItemsStore } from '@/stores/menuItems';
 
 const useAuth = useAuthStore();
 let loggedUser: any = null;
 if (useAuth.user) {
-  loggedUser = useAuth.user;
+    loggedUser = useAuth.user;
 }
 
 const router = useRouter();
@@ -30,6 +31,10 @@ const props = defineProps({
     edit: {
         type: Boolean,
         default: false
+    },
+    restaurantId: {
+        type: String,
+        required: true
     }
 });
 
@@ -53,7 +58,13 @@ const handleSubmit = async () => {
         }
      */
     try {
-        await ordersStore.createOrder(orderRef.value);
+        // create a new order from the orderRef object
+        let order = {
+            ...orderRef.value,
+            client_id: loggedUser.id,
+            order_status: 'en_attente'
+        };
+        await ordersStore.createOrder(order as Order);
         toast.success(props.edit ? 'Order modifié avec succès' : 'Order ajouté avec succès');
         $emit('close');
         /* await ordersStore.fetchOrders(); */
@@ -62,6 +73,17 @@ const handleSubmit = async () => {
         toast.error(props.edit ? 'Erreur lors de la modification' : "Erreur lors de l'ajout");
     }
 };
+
+const menuItemsStore = useMenuItemsStore();
+onMounted(async () => {
+    if (!menuItemsStore.menuItems.length) {
+        try {
+            await menuItemsStore.fetchMenuItems(props.restaurantId);
+        } catch (error) {
+            toast.error('Erreur lors du chargement des menu du restaurant ' + props.restaurantId);
+        }
+    }
+});
 </script>
 
 <template>

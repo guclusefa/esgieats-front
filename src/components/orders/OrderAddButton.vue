@@ -7,11 +7,18 @@ const showModal = ref(false);
 function toggleModal() {
   showModal.value = !showModal.value;
 }
+
+const props = defineProps({
+  restaurantId: {
+    type: String,
+    required: true
+  }
+});
 </script>
 
 <template>
   <ButtonElement primary @click="toggleModal">Passer une commande</ButtonElement>
   <ModalElement v-if="showModal" title="Passer une commande" @close="toggleModal">
-    <OrderForm @close="toggleModal" :okText="'Ajouter'" />
+    <OrderForm @close="toggleModal" :okText="'Ajouter'" :restaurantId="props.restaurantId" />
   </ModalElement>
 </template>
