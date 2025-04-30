@@ -52,7 +52,7 @@ onMounted(async () => {
           </button>
         </RouterLink>
       </div>
-      <WrapperElement>
+      <WrapperElement class="mt-12">
         <SpinnerElement large v-if="loading" />
         <UserList :users="usersStore.users" v-else />
       </WrapperElement>
