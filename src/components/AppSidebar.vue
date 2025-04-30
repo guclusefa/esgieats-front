@@ -7,7 +7,7 @@ import {
 } from '@/utils/app';
 import { HomeIcon, UserGroupIcon, UsersIcon, BanknotesIcon, BuildingStorefrontIcon } from '@heroicons/vue/24/outline';
 import { HomeIcon as HomeIconSolid, UserGroupIcon as UserGroupIconSolid, UsersIcon as UsersIconSolid , BanknotesIcon as BanknotesIconSolid, BuildingStorefrontIcon as BuildingStorefrontIconSolid} from '@heroicons/vue/24/solid';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import WrapperElement from './elements/WrapperElement.vue';
 import LocaleChooser from './fragments/LocaleChooser.vue';
@@ -41,30 +41,36 @@ const navLinks = [
     label: 'Accueil',
     icon: HomeIcon,
     iconSolid: HomeIconSolid,
-    needsAuth: false
+    needsAuth: false,
   },
   {
     name: 'users',
     label: 'Restaurants',
     icon: BuildingStorefrontIcon,
     iconSolid: BuildingStorefrontIconSolid,
-    needsAuth: false
+    needsAuth: false,
   },
-/*   {
-    name: 'deliveries',
-    label: 'Mes Livraisons',
-    icon: UserGroupIcon,
-    iconSolid: UserGroupIconSolid,
-    needsAuth: true
-  }, */
   {
     name: 'orders',
     label: 'Mes Commandes',
     icon: BanknotesIcon,
     iconSolid: BanknotesIconSolid,
-    needsAuth: true
+    needsAuth: true,
+    roles: ['client', 'livreur', 'admin'],
   },
 ];
+
+const filteredNavLinks = computed(() => {
+  return navLinks.filter(link => {
+    if (link.needsAuth && (!user || !user.id)) {
+      return false;
+    }
+    if (link.roles && (!user || !link.roles.includes(user.role))) {
+      return false;
+    }
+    return true;
+  });
+});
 </script>
 
 <template>
@@ -73,7 +79,7 @@ const navLinks = [
     <WrapperElement class="h-full overflow-x-hidden overflow-y-auto">
       <nav class="h-full flex flex-col justify-between gap-5">
         <ul class="flex flex-col gap-2">
-          <li v-for="link in navLinks" :key="link.name">
+          <li v-for="link in filteredNavLinks" :key="link.name">
             <RouterLink v-if="(link.needsAuth && useAuth.user && user.id) || !link.needsAuth" :to="{ name: link.name }"
               class="flex items-center gap-2 p-2 rounded hover:bg-white-darker dark:hover:bg-black-lightest"
               active-class="bg-white-darkend dark:bg-black-lighter" @click="toggleAppSidebarWithTransitionOnMobile"

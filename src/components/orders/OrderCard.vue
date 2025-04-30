@@ -87,10 +87,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-black-lightend hover:shadow-xl transition-all space-y-4 border border-gray-100">
+  <div
+    class="p-6 rounded-2xl shadow-lg bg-white dark:bg-black-lightend hover:shadow-xl transition-all space-y-4 border border-gray-100">
     <!-- Header -->
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-lightest to-primary-darkest dark:from-primary-darkest dark:to-primary-lightest group-hover:from-primary-lightest group-hover:to-primary-darkest transition-colors">
+      <h2
+        class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-lightest to-primary-darkest dark:from-primary-darkest dark:to-primary-lightest group-hover:from-primary-lightest group-hover:to-primary-darkest transition-colors">
         Commande #{{ order.id }}
       </h2>
       <span class="text-xs font-semibold px-3 py-1 rounded-full capitalize" :class="{
@@ -110,11 +112,13 @@ onMounted(async () => {
       <p><span class="font-medium text-gray-700">Faite le :</span> {{ formatDate(order.created_at) }}</p>
     </div>
 
+    <p class="text-sm text-gray-600">
+      <span class="font-medium text-gray-700">Restaurant :</span> {{ restaurantName }}
+    </p>
+
     <!-- Delivery Info (conditionally displayed) -->
-    <div v-if="['en_livraison', 'livre', 'annule'].includes(order.order_status)" class="text-sm text-gray-600 space-y-1">
-      <p class="text-sm text-gray-600">
-        <span class="font-medium text-gray-700">Restaurant :</span> {{ restaurantName }}
-      </p>
+    <div v-if="['en_livraison', 'livre', 'annule'].includes(order.order_status)"
+      class="text-sm text-gray-600 space-y-1">
       <p class="text-sm text-gray-600" v-if="order.delivery_person_id">
         <span class="font-medium text-gray-700">Livreur :</span> {{ deliveryPersonName }}
       </p>
@@ -149,7 +153,8 @@ onMounted(async () => {
     <template v-if="loggedUser.role === 'livreur'">
       <!-- Status Dropdown -->
       <div v-if="order.order_status !== 'livre' && order.order_status !== 'annule'" class="space-y-2">
-        <label for="status-select" class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Mettre à jour le statut :</label>
+        <label for="status-select" class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Mettre à jour le
+          statut :</label>
         <select id="status-select" v-model="order.order_status" @change="updateStatus(order.order_status)"
           class="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm border">
           <option value="en_attente">En Attente</option>
